@@ -175,6 +175,7 @@
       var player;
       var playerReady = false;
       var totalDuration = 870000; // 17 minutos em segundos
+      var totalDurationBar = 870;
     
       // Exibe alguns elementos após 2 segundos (ajuste conforme necessário)
       setTimeout(function() {
@@ -262,8 +263,8 @@
       // Função que inicia a barra de carregamento com duas transições: rápida e lenta
       function startLoadingBar() {
         var bar = document.getElementById('loading-bar');
-        var fastDuration = totalDuration * 0.20; // 20% do tempo para a transição rápida
-        var slowDuration = totalDuration - fastDuration; // Restante para a transição lenta
+        var fastDuration = totalDurationBar * 0.20; // 20% do tempo para a transição rápida
+        var slowDuration = totalDurationBar - fastDuration; // Restante para a transição lenta
     
         // Inicia a transição rápida até 75%
         bar.style.transition = 'width ' + fastDuration + 's linear';
