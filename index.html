@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vídeo Incorporado do YouTube</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #380147;
+        color: white;
+      }
+      #first{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 80vh;
+      }
+      #titleHeader{
+        padding: 50px 50px 50px 50px;
+      }
+      h1 {
+        padding: 0px 50px 0px 50px;
+        text-align: center;
+        font-size: 2.5em;
+      }
+      h2 {      
+        text-align: center;
+        color: #ffca00;
+        width: 80%;
+        font-size: 2em;
+        padding-bottom: 20px;
+      }      
+      #video-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 90vw;
+        height: calc(80vw * 9 / 16); /* Proporção 16:9 */
+        background-color: #000; /* Adicionei um fundo para melhor visualização */
+        overflow: hidden;
+      }
+      #icon_play {
+        position: absolute;
+        z-index: 1;
+        top: 50;
+        left: 50;        
+        font-size: 8em;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        animation: pulse 1s infinite alternate;
+        color: rgb(0, 102, 255);
+      }
+      #initial-overlay, #pause-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      #initial-overlay img, #pause-overlay img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #pause-overlay img {
+        transition: all 0.3s ease-in-out;
+        animation: pulse 1s infinite alternate;
+      }
+      #loading-bar-container {
+        width: 90vw;
+        height: 10px;
+        background-color: #e1e1e1;
+        margin-top: 0;
+      }
+      #loading-bar {
+        width: 0;
+        height: 100%;
+        background-color: red;
+        transition: width 30s linear;
+      }
+      button {
+        margin: 50px 0 50px 0;
+        padding: 0.5em 1em;
+        font-size: 2em;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: white;
+        background-color: #d81b1b;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        animation: pulse 1s infinite alternate;
+      }
+      button:hover {        
+        background-color: #5f0c0c;
+      }
+      @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.05);
+            }
+        }
+      #watching{
+        text-align: center;
+        display: none;
+      }
+      .container {
+        margin: 50px 0 50px 0;
+        text-align: center;
+      }
+      .blocos {
+        padding: 50px 50px 50px 50px;
+      }
+      .material-symbols-outlined {
+        font-size: 5em;
+        padding-bottom: 20px;
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 50,
+        'hght' 50,
+      }
+      #testemunhos {
+        padding: 50px 0 50px 0;
+        text-align: center;
+        background-color: black;
+      }
+      .photos {
+        padding: 0 0 25px 0;
+        height: 300px;
+      }
+      #aprender, h1 {
+        padding-bottom: 50px;
+      }
+      #publico {
+        background-color: black;
+        padding: 50px 0 50px 0;
+        text-align: center;
+      }
+      #publico h1 {
+        padding: 0px 100px 50px 100px;
+      }
+      #garantia img{
+        height: 300px;
+      }
+      #bottom {
+        margin-top: 30px;
+        padding: 30px 30px 30px 30px;
+        text-align: center;
+        font-size: 2.6em;
+        background-color: black;
+        width: 100%;
+      }
+    </style>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+      var player;
+      var playerReady = false;
+      var totalDuration = 1020; // 17 minutos em segundos
+    
+      // Exibe alguns elementos após 2 segundos (ajuste conforme necessário)
+      setTimeout(function() {
+        document.getElementById('watching').style.display = 'block';
+        document.getElementById('first').style.height = 'auto';
+      }, totalDuration);
+    
+      // Função chamada pela API do YouTube
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '1360',
+          width: '100%',
+          videoId: 'en7PqcJa1-8',
+          playerVars: {
+            'controls': 0,
+            'rel': 0,
+            'showinfo': 0,
+            'modestbranding': 1,
+            'disablekb': 1
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+    
+      // Quando o player estiver pronto, marca a flag e adiciona o listener no overlay
+      function onPlayerReady(event) {
+        playerReady = true;
+        var overlay = document.getElementById('initial-overlay');
+        overlay.style.display = 'flex';
+        // Certifica-se de que o overlay não bloqueie cliques após ser acionado
+        overlay.style.pointerEvents = 'auto';
+        overlay.addEventListener('click', startVideo);
+      }
+    
+      // Gerencia as mudanças de estado do player
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+          document.getElementById('pause-overlay').style.display = 'flex';
+          pauseLoadingBar();
+        } else if (event.data == YT.PlayerState.PLAYING) {
+          document.getElementById('pause-overlay').style.display = 'none';
+          // Inicia a barra de carregamento quando o vídeo começa a tocar
+          startLoadingBar();
+        }
+      }
+    
+      // Função para iniciar o vídeo (acionada pelo clique no overlay)
+      function startVideo() {
+        if (!playerReady) return; // Evita chamadas se o player ainda não estiver pronto
+    
+        // Inicia o vídeo
+        player.playVideo();
+    
+        // Remove ou oculta o overlay para que não interfira nos cliques
+        var overlay = document.getElementById('initial-overlay');
+        overlay.style.display = 'none';
+        // Opcional: remover o event listener para evitar execuções futuras
+        overlay.removeEventListener('click', startVideo);
+      }
+    
+      // Função para alternar entre play e pause
+      function togglePlayPause() {
+        if (!playerReady) return;
+        var playerState = player.getPlayerState();
+        if (playerState == YT.PlayerState.PAUSED || playerState == YT.PlayerState.ENDED) {
+          player.playVideo();
+          document.getElementById('pause-overlay').style.display = 'none';
+        } else if (playerState == YT.PlayerState.PLAYING) {
+          player.pauseVideo();
+        }
+      }
+    
+      // Redireciona para a próxima página
+      function irParaProximaPagina() {
+        window.location.href = "https://pay.cakto.com.br/f2hccgt";
+      }
+    
+      // Função que inicia a barra de carregamento com duas transições: rápida e lenta
+      function startLoadingBar() {
+        var bar = document.getElementById('loading-bar');
+        var fastDuration = totalDuration * 0.20; // 20% do tempo para a transição rápida
+        var slowDuration = totalDuration - fastDuration; // Restante para a transição lenta
+    
+        // Inicia a transição rápida até 75%
+        bar.style.transition = 'width ' + fastDuration + 's linear';
+        bar.style.width = '75%';
+    
+        // Após a transição rápida, inicia a lenta até 100%
+        setTimeout(function() {
+          bar.style.transition = 'width ' + slowDuration + 's ease-out';
+          bar.style.width = '100%';
+        }, fastDuration * 1000);
+      }
+    
+      // Pausa a barra de carregamento preservando o progresso atual
+      function pauseLoadingBar() {
+        var bar = document.getElementById('loading-bar');
+        var computedStyle = window.getComputedStyle(bar);
+        var width = computedStyle.getPropertyValue('width');
+        // Remove a transição para manter o estado atual da barra
+        bar.style.transition = 'none';
+        bar.style.width = width;
+      }
+    </script>
+    
+  </head>
+  <body>
+    <section id="first">
+      <h1 id="titleHeader">DESCUBRA COMO PESSOAS COMUNS ESTÃO ATRAINDO DINHEIRO 10x MAIS RÁPIDO QUE O ESPERADO</h1>
+      <h2><span style="font-weight: bold;">detalhe:</span> com apenas 10 minutos do seu dia!</h2>
+      <div id="video-container">
+        <div id="initial-overlay" onclick="startVideo()">
+          <span id="icon_play" class="material-symbols-outlined" onclick="startVideo()">play_circle</span>
+          <img src="initial.webp" alt="Iniciar Vídeo">
+        </div>
+        <div id="pause-overlay" onclick="togglePlayPause()" style="display:none;">
+          <img src="pause.png" alt="Pause">
+        </div>
+        <div id="player"></div>
+      </div>
+      <div id="loading-bar-container">
+        <div id="loading-bar"></div>
+      </div>
+    </section>    
+    <div id="watching">
+      <button onclick="irParaProximaPagina()">Quero Começar A Ter Resultados</button>
+      <div id="beneficios" class="container">
+        <h1>Benefiícios</h1>
+        <div class="blocos">
+          <span class="material-symbols-outlined">check_circle</span>
+          <p>Sua vida vai ter uma transformação imediata, (não se assuste!) : Você vai ver como mudanças simples e pequenas vai mudar sua realidade e criar uma grande abundância em sua vida.</p>
+        </div>
+       <div class="blocos">
+          <span class="material-symbols-outlined">check_circle</span>
+          <p>Fórmula simples e poderosa: Prática diária simples de menos de 11 minutos que qualquer pessoa consegue fazer!</p>
+        </div>
+        <div class="blocos">
+          <span class="material-symbols-outlined">check_circle</span>
+          <p>Ganhos visíveis: Resultados reais em menos tempo do que você imagina.</p>
+        </div>
+      </div>
+      <div id="testemunhos" class="container">
+        <h1>Testemunhos De Sucesso</h1>
+        <div class="blocos">
+          <img class="photos" src="imgs/1.png">
+          <p>“Eu comecei a aplicar as técnicas e em menos de duas semanas eu consegui o emprego que tanto sonhava, com o salário dos meus sonhos!” João M., São Paulo</p>
+        </div>
+        <div class="blocos">
+          <img class="photos" src="imgs/2.png">
+          <p>"Apliquei as técnicas do Magia da Atração, e minha vida financeira, literalmente, mudou num passe de mágica! É muito poderoso!" Ana P., Rio de Janeiro</p>
+        </div>
+        <div class="blocos">
+          <img class="photos" src="imgs/3.png">
+          <p>"Eu queria sucesso na minha vida financeira, mas também no amor, encontrei o amor da minha vida graças às técnicas que aprendi, e hoje somos um casal de sucesso. Não sei porque não comecei fazer isso antes!" Carina S., Florianópolis</p>
+        </div>
+      </div>
+      <div id="aprender" class="container">
+        <h1>O que você vai aprender:</h1>
+        <div class="blocos">
+          <span class="material-symbols-outlined">
+            rocket_launch
+            </span>
+          <p>Como usar o poder incrível guardado no seu subconsciente para atrair dinheiro e prosperidade.</p>
+        </div>
+       <div class="blocos">
+          <span class="material-symbols-outlined">schedule</span>
+          <p>Técnicas simples para manifestar o que deseja rapidamente.</p>
+        </div>
+        <div class="blocos">
+          <span class="material-symbols-outlined">folded_hands</span>
+          <p>Como potencializar suas manifestações com o poder da gratidão.</p>
+        </div>
+        <div class="blocos">
+          <span class="material-symbols-outlined">payments</span>
+          <p>Estratégias usadas por pessoas bem-sucedidas.</p>
+        </div>
+      </div>
+      <div id="publico" class="container">        
+        <h1>Para quem é o Magia da Atração?</h1>
+        <div class="blocos">          
+          <p><span style="font-weight: 900;">Pessoas que</span> estão começando a usar a Lei da Atração e ainda não conseguem manifestar seus desejos porque não sabiam como aplicar as técnicas corretamente.</p>
+        </div>
+        <div class="blocos">          
+          <p><span style="font-weight: 900;">Quem se sente estagnado</span> na vida pessoal ou profissional e deseja construir seu verdadeiro potencial para atrair mais prosperidade, felicidade e sucesso.</p>
+        </div>
+        <div class="blocos">          
+          <p><span style="font-weight: 900;">Pessoas que chegaram</span>  ao limite de frustração e cansaço com a vida que estão levando, sem ver resultados positivos, e querem transformar sua realidade por meio de uma nova mentalidade.</p>
+        </div>
+        <div class="blocos">          
+          <p><span style="font-weight: 900;">Quem percebe que</span>  outras pessoas ao seu redor estão prosperando e vivendo com abundância, mesmo sem se esforçarem tanto, enquanto você ainda luta para alcançar seus objetivos.</p>
+        </div>
+      </div>
+      <div id="garantia" class="container">
+        <h1>Garantia</h1>
+        <img src="imgs/garantia.png" alt="">
+        <div class="blocos">          
+          <p>Não se preocupe, você está 100% protegido! Experimente sem riscos com nossa garantia de 7 dias. Se você não vir resultados, devolvemos seu dinheiro, sem perguntas!</p>
+        </div>
+        <button onclick="irParaProximaPagina()">Quero Começar A Ter Resultados</button>
+      </div>
+    </div>
+    <div id="bottom">
+      <p>
+        Atração Mágica | Todos os direitos reservados 2025
+      </p>
+    </div>
+  </body>
+</html>
