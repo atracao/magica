@@ -58,7 +58,7 @@
         font-size: 8em;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
-        animation: pulse 1s infinite alternate;
+        animation: pulse 0.5s infinite alternate;
         color: rgb(0, 102, 255);
       }
       #initial-overlay, #pause-overlay {
@@ -171,7 +171,6 @@
         width: 100%;
       }
     </style>
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
       var player;
       var playerReady = false;
@@ -217,9 +216,11 @@
       function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
           document.getElementById('pause-overlay').style.display = 'flex';
+          document.getElementById('icon_play').style.display = 'flex';
           pauseLoadingBar();
         } else if (event.data == YT.PlayerState.PLAYING) {
           document.getElementById('pause-overlay').style.display = 'none';
+          document.getElementById('icon_play').style.display = 'none';
           // Inicia a barra de carregamento quando o vídeo começa a tocar
           startLoadingBar();
         }
@@ -231,10 +232,12 @@
     
         // Inicia o vídeo
         player.playVideo();
+        player.setPlaybackQuality('highres');
     
         // Remove ou oculta o overlay para que não interfira nos cliques
         var overlay = document.getElementById('initial-overlay');
         overlay.style.display = 'none';
+        document.getElementById('icon_play').style.display = 'none';
         // Opcional: remover o event listener para evitar execuções futuras
         overlay.removeEventListener('click', startVideo);
       }
@@ -290,8 +293,8 @@
       <h1 id="titleHeader">DESCUBRA COMO PESSOAS COMUNS ESTÃO ATRAINDO DINHEIRO 10x MAIS RÁPIDO QUE O ESPERADO</h1>
       <h2><span style="font-weight: bold;">detalhe:</span> com apenas 10 minutos do seu dia!</h2>
       <div id="video-container">
-        <div id="initial-overlay" onclick="startVideo()">
-          <span id="icon_play" class="material-symbols-outlined" onclick="startVideo()">play_circle</span>
+        <span id="icon_play" class="material-symbols-outlined" onclick="startVideo()">play_circle</span>
+        <div id="initial-overlay" onclick="startVideo()">          
           <img src="initial.webp" alt="Iniciar Vídeo">
         </div>
         <div id="pause-overlay" onclick="togglePlayPause()" style="display:none;">
@@ -385,5 +388,6 @@
         Atração Mágica | Todos os direitos reservados 2025
       </p>
     </div>
-  </body>
+  </body>  
+  <script src="https://www.youtube.com/iframe_api"></script>
 </html>
