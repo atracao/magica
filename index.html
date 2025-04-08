@@ -8,7 +8,7 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-
+        
       }
       body {
         display: flex;
@@ -170,124 +170,64 @@
         background-color: black;
         width: 100%;
       }
-    </style>
-    <script>
-      var player;
-      var playerReady = false;
-      var totalDuration = 870000; // 17 minutos em segundos
-      var totalDurationBar = 870;
-    
-      // Exibe alguns elementos após 2 segundos (ajuste conforme necessário)
-      setTimeout(function() {
-        document.getElementById('watching').style.display = 'block';
-        document.getElementById('first').style.height = 'auto';
-      }, totalDuration);
-    
-      // Função chamada pela API do YouTube
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-          height: '1360',
-          width: '100%',
-          videoId: 'en7PqcJa1-8',
-          playerVars: {
-            'controls': 0,
-            'rel': 0,
-            'showinfo': 0,
-            'modestbranding': 1,
-            'disablekb': 1
-          },
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
+
+      #offer {
+        margin-top: 50px;
       }
-    
-      // Quando o player estiver pronto, marca a flag e adiciona o listener no overlay
-      function onPlayerReady(event) {
-        playerReady = true;
-        var overlay = document.getElementById('initial-overlay');
-        overlay.style.display = 'flex';
-        // Certifica-se de que o overlay não bloqueie cliques após ser acionado
-        overlay.style.pointerEvents = 'auto';
-        overlay.addEventListener('click', startVideo);
+      
+      #offer h1 {
+        font-size: 7rem;
+        color: yellow;
+        margin-bottom: -50px;
       }
-    
-      // Gerencia as mudanças de estado do player
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
-          document.getElementById('pause-overlay').style.display = 'flex';
-          document.getElementById('icon_play').style.display = 'flex';
-          pauseLoadingBar();
-        } else if (event.data == YT.PlayerState.PLAYING) {
-          document.getElementById('pause-overlay').style.display = 'none';
-          document.getElementById('icon_play').style.display = 'none';
-          // Inicia a barra de carregamento quando o vídeo começa a tocar
-          startLoadingBar();
-        }
-      }
-    
-      // Função para iniciar o vídeo (acionada pelo clique no overlay)
-      function startVideo() {
-        if (!playerReady) return; // Evita chamadas se o player ainda não estiver pronto
-    
-        // Inicia o vídeo
-        player.playVideo();
-        player.setPlaybackQuality('highres');
-    
-        // Remove ou oculta o overlay para que não interfira nos cliques
-        var overlay = document.getElementById('initial-overlay');
-        overlay.style.display = 'none';
-        document.getElementById('icon_play').style.display = 'none';
-        // Opcional: remover o event listener para evitar execuções futuras
-        overlay.removeEventListener('click', startVideo);
-      }
-    
-      // Função para alternar entre play e pause
-      function togglePlayPause() {
-        if (!playerReady) return;
-        var playerState = player.getPlayerState();
-        if (playerState == YT.PlayerState.PAUSED || playerState == YT.PlayerState.ENDED) {
-          player.playVideo();
-          document.getElementById('pause-overlay').style.display = 'none';
-        } else if (playerState == YT.PlayerState.PLAYING) {
-          player.pauseVideo();
-        }
-      }
-    
-      // Redireciona para a próxima página
-      function irParaProximaPagina() {
-        window.location.href = "https://pay.cakto.com.br/f2hccgt";
-      }
-    
-      // Função que inicia a barra de carregamento com duas transições: rápida e lenta
-      function startLoadingBar() {
-        var bar = document.getElementById('loading-bar');
-        var fastDuration = totalDurationBar * 0.20; // 20% do tempo para a transição rápida
-        var slowDuration = totalDurationBar - fastDuration; // Restante para a transição lenta
-    
-        // Inicia a transição rápida até 75%
-        bar.style.transition = 'width ' + fastDuration + 's linear';
-        bar.style.width = '75%';
-    
-        // Após a transição rápida, inicia a lenta até 100%
-        setTimeout(function() {
-          bar.style.transition = 'width ' + slowDuration + 's ease-out';
-          bar.style.width = '100%';
-        }, fastDuration * 1000);
-      }
-    
-      // Pausa a barra de carregamento preservando o progresso atual
-      function pauseLoadingBar() {
-        var bar = document.getElementById('loading-bar');
-        var computedStyle = window.getComputedStyle(bar);
-        var width = computedStyle.getPropertyValue('width');
-        // Remove a transição para manter o estado atual da barra
-        bar.style.transition = 'none';
-        bar.style.width = width;
-      }
-    </script>
-    
+        
+      .countdown-container {
+      display: flex;
+      gap: 120px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 80px;
+      margin-bottom: 40px;
+      
+    }
+    .circle-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      transform: scale(2);
+    }
+    .circle-progress {
+      transform: rotate(-90deg); /* Faz o 0 começar no topo */
+    }
+    .circle-bg {
+      fill: none;
+      stroke: #f00;
+      stroke-width: 10;
+    }
+    .circle-fg {
+      fill: none;
+      stroke: #dedede; /* Cor do progresso; ajuste conforme seu gosto */
+      stroke-width: 11;
+      stroke-dasharray: 282.7433388;  /* Circunferência para r=45: 2π45 */
+      stroke-dashoffset: 0; /* Será ajustado via JavaScript */
+      transition: stroke-dashoffset 0.3s linear;
+    }
+    .time-info {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .time-value {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .time-label {
+      font-size: 0.8rem;
+      color: white;
+    }
+    </style>    
   </head>
   <body>
     <section id="first">
@@ -308,6 +248,46 @@
       </div>
     </section>    
     <div id="watching">
+      <div id="offer">
+        <p>de <span style="text-decoration: line-through";>R$ 77</span> por</p>
+        <h1>R$47</h1>
+        <p>oferta relâmpago acaba em:</p>
+      </div>
+      <div class="countdown-container">
+        <!-- Círculo de Horas -->
+        <div class="circle-container">
+          <svg class="circle-progress" width="100" height="100" viewBox="0 0 100 100">
+            <circle class="circle-bg" cx="50" cy="50" r="45" />
+            <circle class="circle-fg circle-hours" cx="50" cy="50" r="45" />
+          </svg>
+          <div class="time-info">
+            <div class="time-value" id="hours">00</div>
+            <div class="time-label">h</div>
+          </div>
+        </div>
+        <!-- Círculo de Minutos -->
+        <div class="circle-container">
+          <svg class="circle-progress" width="100" height="100" viewBox="0 0 100 100">
+            <circle class="circle-bg" cx="50" cy="50" r="45" />
+            <circle class="circle-fg circle-minutes" cx="50" cy="50" r="45" />
+          </svg>
+          <div class="time-info">
+            <div class="time-value" id="minutes">15</div>
+            <div class="time-label">m</div>
+          </div>
+        </div>
+        <!-- Círculo de Segundos -->
+        <div class="circle-container">
+          <svg class="circle-progress" width="100" height="100" viewBox="0 0 100 100">
+            <circle class="circle-bg" cx="50" cy="50" r="45" />
+            <circle class="circle-fg circle-seconds" cx="50" cy="50" r="45" />
+          </svg>
+          <div class="time-info">
+            <div class="time-value" id="seconds">00</div>
+            <div class="time-label">s</div>
+          </div>
+        </div>
+      </div>
       <button onclick="irParaProximaPagina()">Quero Começar A Ter Resultados</button>
       <div id="beneficios" class="container">
         <h1>Benefiícios</h1>
@@ -391,4 +371,175 @@
     </div>
   </body>  
   <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // Configuração do countdown para 15 minutos (0 horas, 15 minutos = 900 segundos)
+    let totalSegundosRestantes = 30 * 60; // 900 segundos
+    
+    // Seleciona os elementos de texto
+    const hoursEl   = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    // Seleciona os elementos dos círculos de progresso
+    const circleHours   = document.querySelector('.circle-hours');
+    const circleMinutes = document.querySelector('.circle-minutes');
+    const circleSeconds = document.querySelector('.circle-seconds');
+
+    // Valor da circunferência do círculo (r=45)
+    const circumference = 282.7433388;
+
+    function atualizarCountdown() {
+      // Calcula horas, minutos e segundos
+      const horas = Math.floor(totalSegundosRestantes / 3600); // Sempre 0 para 15min
+      const minutos = Math.floor((totalSegundosRestantes % 3600) / 60);
+      const segundos = totalSegundosRestantes % 60;
+
+      // Atualiza os valores dos elementos
+      hoursEl.textContent   = String(horas).padStart(2, '0');
+      minutesEl.textContent = String(minutos).padStart(2, '0');
+      secondsEl.textContent = String(segundos).padStart(2, '0');
+
+      // Atualiza a animação dos anéis
+      // Para as horas: total de 12 horas (0-12); aqui, sempre 0, pois countdown é de 15m.
+      const progressoHoras = circumference - (horas / 12) * circumference;
+      circleHours.style.strokeDashoffset = progressoHoras;
+
+      // Para os minutos: escala de 0 a 60
+      const progressoMinutos = circumference - (minutos / 60) * circumference;
+      circleMinutes.style.strokeDashoffset = progressoMinutos;
+
+      // Para os segundos: escala de 0 a 60
+      const progressoSegundos = circumference - (segundos / 60) * circumference;
+      circleSeconds.style.strokeDashoffset = progressoSegundos;
+
+      // Decrementa o tempo restante se ainda houver tempo
+      if (totalSegundosRestantes > 0) {
+        totalSegundosRestantes--;
+      } else {
+        clearInterval(contadorInterval);
+        // Aqui você pode adicionar alguma ação para quando o countdown terminar
+      }
+    }
+
+    // Inicializa o countdown assim que a página carrega
+    
+
+    // Atualiza o countdown a cada 1 segundo
+    const contadorInterval = setInterval(atualizarCountdown, 1000);
+    var player;
+    var playerReady = false;
+    var totalDuration = 870000; // 17 minutos em segundos
+    var totalDurationBar = 870;
+  
+    // Exibe alguns elementos após 2 segundos (ajuste conforme necessário)
+    setTimeout(function() {
+      document.getElementById('watching').style.display = 'block';
+      document.getElementById('first').style.height = 'auto';
+      atualizarCountdown();
+    }, totalDuration);
+  
+    // Função chamada pela API do YouTube
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '1360',
+        width: '100%',
+        videoId: 'en7PqcJa1-8',
+        playerVars: {
+          'controls': 0,
+          'rel': 0,
+          'showinfo': 0,
+          'modestbranding': 1,
+          'disablekb': 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+  
+    // Quando o player estiver pronto, marca a flag e adiciona o listener no overlay
+    function onPlayerReady(event) {
+      playerReady = true;
+      var overlay = document.getElementById('initial-overlay');
+      overlay.style.display = 'flex';
+      // Certifica-se de que o overlay não bloqueie cliques após ser acionado
+      overlay.style.pointerEvents = 'auto';
+      overlay.addEventListener('click', startVideo);
+    }
+  
+    // Gerencia as mudanças de estado do player
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+        document.getElementById('pause-overlay').style.display = 'flex';
+        document.getElementById('icon_play').style.display = 'flex';
+        pauseLoadingBar();
+      } else if (event.data == YT.PlayerState.PLAYING) {
+        document.getElementById('pause-overlay').style.display = 'none';
+        document.getElementById('icon_play').style.display = 'none';
+        // Inicia a barra de carregamento quando o vídeo começa a tocar
+        startLoadingBar();
+      }
+    }
+  
+    // Função para iniciar o vídeo (acionada pelo clique no overlay)
+    function startVideo() {
+      if (!playerReady) return; // Evita chamadas se o player ainda não estiver pronto
+  
+      // Inicia o vídeo
+      player.playVideo();
+      player.setPlaybackQuality('highres');
+  
+      // Remove ou oculta o overlay para que não interfira nos cliques
+      var overlay = document.getElementById('initial-overlay');
+      overlay.style.display = 'none';
+      document.getElementById('icon_play').style.display = 'none';
+      // Opcional: remover o event listener para evitar execuções futuras
+      overlay.removeEventListener('click', startVideo);
+    }
+  
+    // Função para alternar entre play e pause
+    function togglePlayPause() {
+      if (!playerReady) return;
+      var playerState = player.getPlayerState();
+      if (playerState == YT.PlayerState.PAUSED || playerState == YT.PlayerState.ENDED) {
+        player.playVideo();
+        document.getElementById('pause-overlay').style.display = 'none';
+      } else if (playerState == YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+      }
+    }
+  
+    // Redireciona para a próxima página
+    function irParaProximaPagina() {
+      window.location.href = "https://101-afirmacoes-da-riqueza.pay.yampi.com.br/r/NUI6XTU98F";
+    }
+  
+    // Função que inicia a barra de carregamento com duas transições: rápida e lenta
+    function startLoadingBar() {
+      var bar = document.getElementById('loading-bar');
+      var fastDuration = totalDurationBar * 0.20; // 20% do tempo para a transição rápida
+      var slowDuration = totalDurationBar - fastDuration; // Restante para a transição lenta
+  
+      // Inicia a transição rápida até 75%
+      bar.style.transition = 'width ' + fastDuration + 's linear';
+      bar.style.width = '75%';
+  
+      // Após a transição rápida, inicia a lenta até 100%
+      setTimeout(function() {
+        bar.style.transition = 'width ' + slowDuration + 's ease-out';
+        bar.style.width = '100%';
+      }, fastDuration * 1000);
+    }
+  
+    // Pausa a barra de carregamento preservando o progresso atual
+    function pauseLoadingBar() {
+      var bar = document.getElementById('loading-bar');
+      var computedStyle = window.getComputedStyle(bar);
+      var width = computedStyle.getPropertyValue('width');
+      // Remove a transição para manter o estado atual da barra
+      bar.style.transition = 'none';
+      bar.style.width = width;
+    }   
+  </script>
 </html>
