@@ -162,6 +162,9 @@
       #garantia img{
         height: 300px;
       }
+      #garantia p{
+        font-size: 1.5em;
+      }
       #bottom {
         margin-top: 30px;
         padding: 30px 30px 30px 30px;
@@ -169,6 +172,8 @@
         font-size: 2em;
         background-color: black;
         width: 100%;
+        position: absolute;
+        bottom: 0;
       }
 
       #offer {
@@ -439,6 +444,7 @@
     setTimeout(function() {
       document.getElementById('watching').style.display = 'block';
       document.getElementById('first').style.height = 'auto';
+      document.getElementById('bottom').style.position = 'relative';
       atualizarCountdown();
     }, totalDuration);
   
