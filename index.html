@@ -31,13 +31,13 @@
       h1 {
         padding: 0px 50px 0px 50px;
         text-align: center;
-        font-size: 4em;
+        font-size: 2.5em;
       }
-      #first p {      
+      h2 {      
         text-align: center;
         color: #ffca00;
-        width: 90%;
-        font-size: 3em;
+        width: 80%;
+        font-size: 2em;
         padding-bottom: 20px;
       }      
       #video-container {
@@ -162,26 +162,17 @@
       #garantia img{
         height: 300px;
       }
-      #garantia p{
-        font-size: 1.5em;
-      }
       #bottom {
         margin-top: 30px;
         padding: 30px 30px 30px 30px;
         text-align: center;
-        font-size: 2em;
+        font-size: 2.6em;
         background-color: black;
         width: 100%;
-        position: absolute;
-        bottom: 0;
       }
 
       #offer {
         margin-top: 50px;
-      }
-
-      #offer p {
-        font-size: 2.5em;
       }
       
       #offer h1 {
@@ -240,8 +231,8 @@
   </head>
   <body>
     <section id="first">
-      <h1 id="titleHeader">Como Um Casamento Fracassado Me Fez Sair Da Escassez Inacabável</h1>
-      <p>Essa é a história real de como eu transformei dor, culpa e medo em um novo ciclo de abundância — sem precisar de sorte, técnicas milagrosas ou fórmulas prontas</p>
+      <h1 id="titleHeader">DESCUBRA COMO PESSOAS COMUNS ESTÃO ATRAINDO DINHEIRO 10x MAIS RÁPIDO QUE O ESPERADO</h1>
+      <h2><span style="font-weight: bold;">detalhe:</span> com apenas 10 minutos do seu dia!</h2>
       <div id="video-container">
         <span id="icon_play" class="material-symbols-outlined" onclick="startVideo()">play_circle</span>
         <div id="initial-overlay" onclick="startVideo()">          
@@ -258,8 +249,8 @@
     </section>    
     <div id="watching">
       <div id="offer">
-        <p>de <span style="text-decoration: line-through";>12x R$20,37</span> por</p>
-        <h1>R$ 97</h1>
+        <p>de <span style="text-decoration: line-through";>R$ 250</span> por</p>
+        <h1>12x De R$ 13,76</h1>
         <p>oferta relâmpago acaba em:</p>
       </div>
       <div class="countdown-container">
@@ -382,7 +373,7 @@
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     // Configuração do countdown para 15 minutos (0 horas, 15 minutos = 900 segundos)
-    let totalSegundosRestantes = 33 * 60; // 1005 segundos
+    let totalSegundosRestantes = 60 * 60; // 900 segundos
     
     // Seleciona os elementos de texto
     const hoursEl   = document.getElementById('hours');
@@ -437,14 +428,13 @@
     const contadorInterval = setInterval(atualizarCountdown, 1000);
     var player;
     var playerReady = false;
-    var totalDuration = 1020000; // 17 minutos em segundos
-    var totalDurationBar = 1320;
+    var totalDuration = 870000; // 17 minutos em segundos
+    var totalDurationBar = 870;
   
     // Exibe alguns elementos após 2 segundos (ajuste conforme necessário)
     setTimeout(function() {
       document.getElementById('watching').style.display = 'block';
       document.getElementById('first').style.height = 'auto';
-      document.getElementById('bottom').style.position = 'relative';
       atualizarCountdown();
     }, totalDuration);
   
@@ -453,7 +443,7 @@
       player = new YT.Player('player', {
         height: '1360',
         width: '100%',
-        videoId: '0Q98UG8r8vE',
+        videoId: 'en7PqcJa1-8',
         playerVars: {
           'controls': 0,
           'rel': 0,
